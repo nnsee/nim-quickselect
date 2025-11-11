@@ -33,11 +33,15 @@ In most cases, you should prefer Floyd-Rivest as it performs better on average. 
 
 ### Quickselect
 
+<https://en.wikipedia.org/wiki/Quickselect?useskin=vector>
+
 - Average time complexity: O(n)
 - Worst case: O(n²)
 - Uses random pivot selection, so you may optionally call `randomize()` beforehand (the library does not do this for you)
 
 ### Floyd-Rivest
+
+<https://en.wikipedia.org/wiki/Floyd%E2%80%93Rivest_algorithm?useskin=vector>, <https://people.csail.mit.edu/rivest/pubs/FR75b.pdf>
 
 - Average time complexity: O(n)
 - Typically faster than quickselect for most arrays, but especially large ones
