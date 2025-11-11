@@ -120,7 +120,11 @@ proc quickselect*[T](arr: openArray[T], k: int): T =
 
 
 when isMainModule:
-  import std/[algorithm, times]
+  import std/[algorithm, strutils, times]
+
+  proc ff(f: float): string =
+    return formatFloat(f, ffDecimal, 2)
+
   randomize()
 
   const numTrials = 5
@@ -167,9 +171,9 @@ when isMainModule:
 
     sortTime /= numTrials.float
 
-    echo "quickselect avg: ", quickselectTime * 1000, " ms"
-    echo "floydRivest avg: ", floydRivestTime * 1000, " ms"
-    echo "sort avg: ", sortTime * 1000, " ms"
-    echo "quickselect vs sort: ", sortTime / quickselectTime, "x"
-    echo "floydRivest vs sort: ", sortTime / floydRivestTime, "x"
-    echo "floydRivest vs quickselect: ", quickselectTime / floydRivestTime, "x"
+    echo "quickselect avg: ", ff(quickselectTime * 1000.float), " ms"
+    echo "floydRivest avg: ", ff(floydRivestTime * 1000.float), " ms"
+    echo "sort avg:        ", ff(sortTime * 1000.float), " ms"
+    echo "quickselect vs sort: ", ff(sortTime / quickselectTime), "x"
+    echo "floydRivest vs sort: ", ff(sortTime / floydRivestTime), "x"
+    echo "floydRivest vs qs:   ", ff(quickselectTime / floydRivestTime), "x"
