@@ -55,8 +55,33 @@ proc floydRivestImpl[T](data: var seq[T], left, right, k: int) =
     if k <= j:
       right = j - 1
 
+proc floydRivestInplace*[T](data: var seq[T], k: int): T =
+  ## Find the kth smallest element using Floyd-Rivest algorithm.
+  ##
+  ## Partially sorts the array in-place.
+  ## See `floydRivest<#floydRivest,openArray[T],int>`_ for a version that creates
+  ## a copy instead.
+  ##
+  ## This is typically faster than quickselect for most arrays.
+  ##
+  ## Average time complexity: O(n)
+  runnableExamples:
+    var data = @[3, 1, 4, 1, 5, 9, 2, 6]
+    assert floydRivestInplace(data, 0) == 1  # smallest
+    assert floydRivestInplace(data, 4) == 4  # 5th smallest / median
+    # data is now partially sorted
+
+  if k < 0 or k >= data.len:
+    raise newException(IndexDefect, "k out of bounds")
+
+  floydRivestImpl(data, 0, data.high, k)
+  return data[k]
+
 proc floydRivest*[T](arr: openArray[T], k: int): T =
   ## Find the kth smallest element using Floyd-Rivest algorithm.
+  ##
+  ## Does not modify the input array, but creates a copy of the array internally.
+  ## See `floydRivestInplace<#floydRivestInplace,seq[T],int>`_ for a copy-free version.
   ##
   ## This is typically faster than quickselect for most arrays.
   ##
@@ -66,12 +91,8 @@ proc floydRivest*[T](arr: openArray[T], k: int): T =
     assert floydRivest(data, 0) == 1  # smallest
     assert floydRivest(data, 4) == 4  # 5th smallest / median
 
-  if k < 0 or k >= arr.len:
-    raise newException(IndexDefect, "k out of bounds")
-
   var data = @arr
-  floydRivestImpl(data, 0, data.high, k)
-  return data[k]
+  return floydRivestInplace(data, k)
 
 
 proc quickselectImpl[T](data: var seq[T], left, right, k: int): T =
@@ -99,10 +120,36 @@ proc quickselectImpl[T](data: var seq[T], left, right, k: int): T =
   else:
     return quickselectImpl(data, storeIdx + 1, right, k)
 
+proc quickselectInplace*[T](data: var seq[T], k: int): T =
+  ## Find the kth smallest element using the Quickselect algorithm.
+  ##
+  ## Partially sorts the array in-place.
+  ## See `quickselect<#quickselect,openArray[T],int>`_ for a version that creates
+  ## a copy instead.
+  ##
+  ## Uses a random pivot. You may optionally call `randomize()`.
+  ##
+  ## Average time complexity: O(n)
+  ##
+  ## Worst case: O(n²)
+  runnableExamples:
+    var data = @[3, 1, 4, 1, 5, 9, 2, 6]
+    assert quickselectInplace(data, 0) == 1  # smallest
+    assert quickselectInplace(data, 4) == 4  # 5th smallest / median
+    # data is now partially sorted
+
+  if k < 0 or k >= data.len:
+    raise newException(IndexDefect, "k out of bounds")
+
+  return quickselectImpl(data, 0, data.high, k)
+
 proc quickselect*[T](arr: openArray[T], k: int): T =
   ## Find the kth smallest element using the Quickselect algorithm.
-  ## Uses a random point for the pivots. You may optionally call
-  ## randomize().
+  ##
+  ## Does not modify the input array, but creates a copy of the array internally.
+  ## See `quickselectInplace<#quickselectInplace,seq[T],int>`_ for a copy-free version.
+  ##
+  ## Uses a random pivot. You may optionally call `randomize()`.
   ##
   ## Average time complexity: O(n)
   ##
@@ -112,11 +159,8 @@ proc quickselect*[T](arr: openArray[T], k: int): T =
     assert quickselect(data, 0) == 1  # smallest
     assert quickselect(data, 4) == 4  # 5th smallest / median
 
-  if k < 0 or k >= arr.len:
-    raise newException(IndexDefect, "k out of bounds")
-
   var data = @arr
-  return quickselectImpl(data, 0, data.high, k)
+  return quickselectInplace(data, k)
 
 
 when isMainModule:
