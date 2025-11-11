@@ -6,7 +6,7 @@
 ## Floyd-Rivest is generally roughly 2x faster than Quickselect. However, depending
 ## on the shape of the data you're working with, Quickselect might be a better option.
 
-import std/[random, algorithm, times, math]
+import std/[random, math]
 
 proc floydRivestImpl[T](data: var seq[T], left, right, k: int) =
   var left = left
@@ -120,6 +120,7 @@ proc quickselect*[T](arr: openArray[T], k: int): T =
 
 
 when isMainModule:
+  import std/[algorithm, times]
   randomize()
 
   const numTrials = 5
