@@ -18,7 +18,7 @@ let data = @[3, 1, 4, 1, 5, 9, 2, 6]
 # Find the smallest element (k=0)
 echo quickselect(data, 0)
 
-let median = data.high div 4
+let median = data.high div 2
 
 # Find the median
 echo quickselect(data, median)
