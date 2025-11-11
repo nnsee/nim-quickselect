@@ -15,13 +15,14 @@ proc floydRivestImpl[T](data: var seq[T], left, right, k: int) =
   while right > left:
     # use select recursively to sample a smaller set
     if right - left > 600:
-      let n = right - left + 1
-      let i = k - left + 1
+      let n = float(right - left + 1)
+      let i = float(k - left + 1)
+      let kf = float(k)
       let z = ln(n.float)
       let s = 0.5 * exp(2.0 * z / 3.0)
-      let sd = 0.5 * sqrt(z * s * (n.float - s) / n.float) * float(sgn(i.float - n.float / 2.0))
-      let newLeft = max(left, int(k.float - i.float * s / n.float + sd))
-      let newRight = min(right, int(k.float + (n.float - i.float) * s / n.float + sd))
+      let sd = 0.5 * sqrt(z * s * (n - s) / n) * float(sgn(i - n / 2.0))
+      let newLeft = max(left, int(kf - i * s / n + sd))
+      let newRight = min(right, int(kf + (n - i) * s / n + sd))
       floydRivestImpl(data, newLeft, newRight, k)
 
     # partition around pivot at k
