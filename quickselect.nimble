@@ -1,6 +1,6 @@
 # Package
 
-version       = "1.0.2"
+version       = "1.1.0"
 author        = "Rasmus Moorats"
 description   = "Nim implemenation of the Quickselect and Floyd-Rivest algorithms"
 license       = "MIT"
